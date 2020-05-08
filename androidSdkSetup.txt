@@ -1,0 +1,22 @@
+1. zainstalować android studio
+1.1 zainstalować driver do androida 'sudo apt-get install adb'
+1.2 uruchomic tryb developerski w telefonie (7 klikniec w numer wersji OS)
+1.3 urchomic debugowanie przez usb (w ustawieniach developerskich)
+1.3 urchomic instalowanie przez usb (w ustawieniach developerskich)
+2. utworzyc nowy projekt "Empty Activity"
+3. zbudowac 
+4. jesli wystapił błąd zwiazany z platforms;android-28
+4.1 znalezc ./sdkmanager Android/tools/bin i wywyołać polecenie ./sdkmanager "platforms;android-28". Lub zainstalować przez AndroidStudio tools -> sdkmanager
+4.2 w przypadku pracy na windowsie nalezy skorzystac z konsoli zainstalowanej w android studio
+5. zbudowac
+6. wejsc w Run -> Run app. Na belce powinny się pojawic opcje: https://developer.android.com/training/basics/firstapp/running-app
+6. Jesli wystepuja bledy przy znalezieniu urzadzenia
+6.1 adb devices -> no permissions Mozna tez spróbować rozłączyć usb
+6.1.1 sudo adb kill-server
+6.1.2 sudo adb start-server
+6.2 adb devices -> unauthorized
+6.2 na telefonie nadac uprawnienia do debugowania i przejsc w tryb PTP (wyskoczą dwa dymki)
+7 Gotowe!
+
+Pomocne linki:
+Jak zrobić hello world: https://developer.android.com/training/basics/firstapp
