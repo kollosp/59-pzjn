@@ -1,22 +1,25 @@
 package com.example.a58_androidtest;
 
+import android.graphics.Color;
+
 public class SimulatorData {
-    //red, green, yellow, black
-    Integer color;
+    //1 - red, 2 - green, 3 -yellow, 4 -black
+    Integer color = 1;
     String simulatorName;
     Integer breathsPerMinute;
     Integer beatsPerMinute;
     Boolean ableToWalk;
     Boolean executesCommand;
-    Boolean capillaryRefill;
+    Integer capillaryRefill;
 
     int status; //connected or disconnected
 
-    public SimulatorData(String s, Integer breaths, Integer beats, Boolean walking){
+    public SimulatorData(String s, Integer breaths, Integer beats, Boolean walking, Integer c){
         simulatorName = s;
         ableToWalk = walking;
         beatsPerMinute = beats;
         breathsPerMinute = breaths;
+        color = c;
     }
 
     public Integer getColor(){
@@ -67,11 +70,34 @@ public class SimulatorData {
         executesCommand = b;
     }
 
-    public Boolean getCapillaryRefill(){
+    public Integer getCapillaryRefill(){
         return capillaryRefill;
     }
 
-    public void setCapillaryRefill(Boolean b){
+    public void setCapillaryRefill(Integer b){
         capillaryRefill = b;
+    }
+
+    public Integer getConnectionStatus(){
+        return status;
+    }
+
+    public void setConnectionStatus(Integer s){
+        status = s;
+    }
+
+    public Integer getColorHex(){
+        switch(color){
+            case 1:
+                return Color.RED;
+            case 2:
+                return Color.GREEN;
+            case 3:
+                return Color.YELLOW;
+            case 0:
+                return Color.BLACK;
+            default:
+                return Color.GRAY;
+        }
     }
 }
