@@ -10,11 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".technicalActivity"
+            android:label="@string/title_activity_technical"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".BluetoothAdvertisingActivity"
-            android:label="@string/title_activity_bluetooth_advertising"></activity>
+            android:label="@string/title_activity_bluetooth_advertising" />
         <activity
             android:name=".BluetoothActivity"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".DisplayMessageActivity"
             android:parentActivityName=".MainActivity">
@@ -32,10 +36,10 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
-
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 </manifest>

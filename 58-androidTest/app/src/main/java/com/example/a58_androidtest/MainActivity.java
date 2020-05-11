@@ -41,4 +41,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, BluetoothAdvertisingActivity.class);
         startActivity(intent);
     }
+
+    public void goToTechnicalScreen(View view){
+        Intent intent = new Intent(this, technicalActivity.class);
+        startActivity(intent);
+    }
 }
