@@ -120,7 +120,7 @@ public class BluetoothAdvertisingActivity extends AppCompatActivity {
         data = new AdvertiseData.Builder()
                 .setIncludeDeviceName(true)
                 .addServiceUuid(puuid)
-                .addServiceData( puuid, ADVERTISER_DATA_TO_SEND.getBytes(Charset.forName( "UTF-8" )))
+                .addServiceData(puuid, ADVERTISER_DATA_TO_SEND.getBytes(Charset.forName( "UTF-8" )))
                 .build();
 
 
@@ -203,7 +203,6 @@ public class BluetoothAdvertisingActivity extends AppCompatActivity {
                 currentMode = 0;
             }
         }, 3000);
-
     }
 
     public void startDiscovering(View view){

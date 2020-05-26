@@ -2,8 +2,11 @@ package com.example.a58_androidtest;
 
 import android.graphics.Color;
 
-public class SimulatorData {
+import java.io.Serializable;
+
+public class SimulatorData implements Serializable {
     //1 - red, 2 - green, 3 -yellow, 4 -black
+    short device;
     Integer color = 1;
     String simulatorName;
     Integer breathsPerMinute;
@@ -14,12 +17,24 @@ public class SimulatorData {
 
     int status; //connected or disconnected
 
+    public SimulatorData(short device){
+        this.device = device;
+    }
+
     public SimulatorData(String s, Integer breaths, Integer beats, Boolean walking, Integer c){
         simulatorName = s;
         ableToWalk = walking;
         beatsPerMinute = beats;
         breathsPerMinute = breaths;
         color = c;
+    }
+
+    public short getDevice(){
+        return device;
+    }
+
+    public void setDevice(short dev){
+        this.device = dev;
     }
 
     public Integer getColor(){
