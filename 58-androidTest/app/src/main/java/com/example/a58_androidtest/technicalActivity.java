@@ -27,6 +27,8 @@ import java.util.TimerTask;
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class technicalActivity extends AppCompatActivity {
 
+    final public static String DEVICE = "device";
+
     ArrayList<SimulatorData> simulators = new ArrayList<SimulatorData>();
     LinearLayout simulatorWrapper;
     BTManager bluetoothManager = new BTManager("00000000-0000-1000-8000-00805F9B34FB");
@@ -142,9 +144,9 @@ public class technicalActivity extends AppCompatActivity {
     }
 
     public void openWindow(SimulatorData device){
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
-        intent.putExtra("BluetoothManager", bluetoothManager);
-        intent.putExtra("Device", device);
+        Intent intent = new Intent(this, technicalDeviceProperties.class);
+        //intent.putExtra("BluetoothManager", bluetoothManager);
+        intent.putExtra(DEVICE, device);
         startActivity(intent);
     }
 

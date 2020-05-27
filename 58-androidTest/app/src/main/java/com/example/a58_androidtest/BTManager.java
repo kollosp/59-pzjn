@@ -124,6 +124,10 @@ public class BTManager implements Serializable {
                 //System.out.println(result);
                 byte[] received = result.getScanRecord().getServiceData(result.getScanRecord().getServiceUuids().get(0));
 
+                if(received == null || received.length < 3){
+                    System.out.println("Received broken frame");
+                    return;
+                }
 
                 //check if ping message
                 if(received[0] == 1){
@@ -149,12 +153,12 @@ public class BTManager implements Serializable {
                     short device = (short)((received[1] << 8) + received[2]);
 
                     //check if device is a receiver
-                    if(device == deviceAddress){
-                        System.out.println("Received data: " + device);
+                    //if(device == deviceAddress){
+                        System.out.println("Received data: " + device  + "-------------------------------------------------------------------" );
                         for(int i=0;i<received.length;++i)
                             System.out.print(received[i] + " ");
                         System.out.println("");
-                    }
+                    //}
                 }
 
                 //receivedData.add(builder.toString());
