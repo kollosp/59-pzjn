@@ -24,14 +24,15 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class technicalActivity extends AppCompatActivity {
 
     final public static String DEVICE = "device";
+    final public static String BTMANAGER = "BluetoothManager";
 
     ArrayList<SimulatorData> simulators = new ArrayList<SimulatorData>();
     LinearLayout simulatorWrapper;
-    BTManager bluetoothManager = new BTManager("00000000-0000-1000-8000-00805F9B34FB");
+    BTManager2 bluetoothManager = BTManager2.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +42,6 @@ public class technicalActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         for(int i=0;i<4;++i) {
             int k = i*4;
@@ -71,6 +64,8 @@ public class technicalActivity extends AppCompatActivity {
         render();
     }
 
+
+
     public void initTimer() {
 
         class RemindTask extends TimerTask {
@@ -79,11 +74,6 @@ public class technicalActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         simulators = bluetoothManager.getDevicesInRange();
-
-                        for(SimulatorData sim : simulators){
-                            bluetoothManager.askForAllParams(sim.getDevice());
-                        }
-
                         render();
                     }
                 });
@@ -91,7 +81,7 @@ public class technicalActivity extends AppCompatActivity {
         }
 
         Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new RemindTask(),0, 5000);
+        timer.scheduleAtFixedRate(new RemindTask(),0, 2000);
     }
 
     void render(){
@@ -145,7 +135,6 @@ public class technicalActivity extends AppCompatActivity {
 
     public void openWindow(SimulatorData device){
         Intent intent = new Intent(this, technicalDeviceProperties.class);
-        //intent.putExtra("BluetoothManager", bluetoothManager);
         intent.putExtra(DEVICE, device);
         startActivity(intent);
     }
@@ -153,9 +142,15 @@ public class technicalActivity extends AppCompatActivity {
     public void sendPingMessage(View view){
 
         Toast.makeText(getApplicationContext(), "Ping", Toast.LENGTH_SHORT).show();
-        bluetoothManager.setParam((short)0x100, 'B', (char)65);
-        //bluetoothManager.sendPing();
+        //bluetoothManager.setParam((short)0x100, 'B', (char)65);
+        bluetoothManager.sendPing();
     }
+
+    public void sendConfirmMessage(View view){
+
+    }
+
+
 
     TextView setTextViewAttributes(TextView tv){
         tv.setPadding(5,2,5,2);

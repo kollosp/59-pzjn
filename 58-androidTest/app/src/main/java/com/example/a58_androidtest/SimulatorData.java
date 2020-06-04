@@ -8,14 +8,17 @@ public class SimulatorData implements Serializable {
     //1 - red, 2 - green, 3 -yellow, 4 -black
     short device;
     Integer color = 1;
-    String simulatorName;
-    Integer breathsPerMinute;
-    Integer beatsPerMinute;
-    Boolean ableToWalk;
-    Boolean executesCommand;
-    Integer capillaryRefill;
+    String simulatorName = "";
+    Integer breathsPerMinute = 0;
+    Integer beatsPerMinute = 0;
+    Boolean ableToWalk = false;
+    Boolean executesCommand = false;
+    double capillaryRefill = 0.0;
+    long updateTime = 0;
 
-    int status; //connected or disconnected
+    final public static int TIME_TO_DISCONNECT = 15 * 1000; //30s
+
+    int status = 0; //connected or disconnected
 
     public SimulatorData(short device){
         this.device = device;
@@ -85,19 +88,27 @@ public class SimulatorData implements Serializable {
         executesCommand = b;
     }
 
-    public Integer getCapillaryRefill(){
+    public double getCapillaryRefill(){
         return capillaryRefill;
     }
 
-    public void setCapillaryRefill(Integer b){
+    public void setCapillaryRefill(double b){
         capillaryRefill = b;
     }
 
     public Integer getConnectionStatus(){
-        return status;
+
+        if(status == 1 && (System.currentTimeMillis() - updateTime) < TIME_TO_DISCONNECT){
+            return 1;
+        }else{
+            status = 0;
+            return 0;
+        }
     }
 
     public void setConnectionStatus(Integer s){
+
+        updateTime = System.currentTimeMillis();
         status = s;
     }
 

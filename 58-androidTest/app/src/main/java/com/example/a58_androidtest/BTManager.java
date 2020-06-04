@@ -57,6 +57,8 @@ public class BTManager implements Serializable {
     ArrayList<SimulatorData> devicesInRange = new ArrayList<SimulatorData>();
 
     ArrayList<AdvertiseData> toBeSend = new ArrayList<AdvertiseData>();
+    short lastReceiver = 0;
+    int lastAskedSimulator = 0;
 
     //ex: "00000000-0000-1000-8000-00805F9B34FB"
     public BTManager(String _uuid){
@@ -153,12 +155,38 @@ public class BTManager implements Serializable {
                     short device = (short)((received[1] << 8) + received[2]);
 
                     //check if device is a receiver
-                    //if(device == deviceAddress){
+                    if(device == deviceAddress){
                         System.out.println("Received data: " + device  + "-------------------------------------------------------------------" );
-                        for(int i=0;i<received.length;++i)
-                            System.out.print(received[i] + " ");
+                        for(int i=0;i<received.length;++i) {
+                            System.out.print(received[i] & 0xFF);
+                            System.out.print(" ");
+                        }
                         System.out.println("");
-                    //}
+
+                        device = (short)((received[3] << 8) + received[4]);
+
+                        for(int i=0;i<devicesInRange.size();++i){
+                            SimulatorData ss = devicesInRange.get(i);
+                            if(ss.getDevice() == device && received.length >= 9){
+                                ss.setBeatsPerMinute((int)(received[5] & 0xFF));
+                                ss.setBreathsPerMinute((int)(received[6] & 0xFF));
+                                ss.setAbleToWalk((received[7] & 0x1) > 0 ? true : false);
+                                ss.setExecutesCommand((received[7] & 0x2) > 0 ? true : false);
+                                ss.setCapillaryRefill((received[8] / 10.0));
+
+                                // in simulator data: 1 - red, 2 - green, 3 -yellow, 4 -black
+                                //in arduino: 0- no, 1 - green, 2 - yellow, 3 -red, 4 -black
+
+                                switch (received[9]){
+                                    case 1: ss.setColor(2); break;
+                                    case 2: ss.setColor(3); break;
+                                    case 3: ss.setColor(1); break;
+                                    case 4: ss.setColor(4); break;
+                                    default: ss.setColor(0); break;
+                                }
+                            }
+                        }
+                    }
                 }
 
                 //receivedData.add(builder.toString());
@@ -191,17 +219,31 @@ public class BTManager implements Serializable {
 
 
 
+    public void sendConfirmFrame(){
+        ByteBuffer bb = ByteBuffer.allocate(3);
+        bb.put((byte) 4); //add ping code
+        bb.putShort(lastReceiver);
+
+        AdvertiseData data = new AdvertiseData.Builder()
+            //.setIncludeDeviceName(true)
+            .addServiceUuid(uuid)
+            .addServiceData(uuid,bb.array())
+            .build();
+
+        send(data);
+    }
+
     //max frame size is 31 bytes
     public void sendPing(){
-        ByteBuffer bb = ByteBuffer.allocate(1);
+        ByteBuffer bb = ByteBuffer.allocate(3);
         bb.put((byte) 1); //add ping code
+        bb.putShort(deviceAddress);
         //ParcelUuid _uuid = ParcelUuid.fromString("00000000-0000-1000-8000-00805F9B34FB");
 
-        Random r = new Random();
         AdvertiseData data = new AdvertiseData.Builder()
                 //.setIncludeDeviceName(true)
                 .addServiceUuid(uuid)
-                .addServiceData(uuid, ("somedata" + r.nextInt()) .getBytes(Charset.forName( "UTF-8" )))
+                .addServiceData(uuid,bb.array())
                 .build();
 
         Map<ParcelUuid, byte[]> m = data.getServiceData();
@@ -244,6 +286,11 @@ public class BTManager implements Serializable {
         bb.put((byte) 3); //add ask code
         bb.putShort(receiverAddress); //add ping code
         bb.putShort(deviceAddress); //add ping code
+
+        lastReceiver = receiverAddress;
+
+        System.out.println("########ask for all");
+        System.out.println(receiverAddress);
 
         AdvertiseData data = new AdvertiseData.Builder()
                 //.setIncludeDeviceName(true)
@@ -297,24 +344,18 @@ public class BTManager implements Serializable {
         /*mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                System.out.println("stop pinging timer " + advertiserStatus);
 
-                if(advertiserStatus  == 1) {
-                    advertiserStatus = 0;
-                    advertiser.stopAdvertising(advertisingCallback);
-                }
+                askForAllParams(sim.getDevice());
             }
         }, 1000);*/
+
+
+        System.out.println("send");
+        System.out.println(toBeSend.get(0));
 
         advertiser.startAdvertising(advertiserSettings, toBeSend.get(0), advertisingCallback);
         advertiserStatus = 1;
         toBeSend.remove(0);
 
-        System.out.println("ping");
     }
-
-    public void receive(){
-
-    }
-
 }
