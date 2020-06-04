@@ -262,7 +262,7 @@ public class BTManager2  implements Serializable {
         class RemindTask extends TimerTask {
             public void run() {
 
-                if(busy == 10){
+                if(busy == 2){
                     busy = 0;
                     resetCommunication();
                     return;
