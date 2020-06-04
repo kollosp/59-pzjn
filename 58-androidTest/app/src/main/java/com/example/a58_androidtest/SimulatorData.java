@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class SimulatorData implements Serializable {
     //1 - red, 2 - green, 3 -yellow, 4 -black
     short device;
-    Integer color = 1;
+    Integer color = 0;
     String simulatorName = "";
     Integer breathsPerMinute = 0;
     Integer beatsPerMinute = 0;
@@ -120,7 +120,7 @@ public class SimulatorData implements Serializable {
                 return Color.GREEN;
             case 3:
                 return Color.YELLOW;
-            case 0:
+            case 4:
                 return Color.BLACK;
             default:
                 return Color.GRAY;

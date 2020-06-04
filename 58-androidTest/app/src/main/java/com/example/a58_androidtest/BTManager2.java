@@ -278,7 +278,7 @@ public class BTManager2  implements Serializable {
                     if(lastAsked >= devicesInRange.size()) lastAsked = 0;
                     askForAllParams(devicesInRange.get(lastAsked).getDevice());
 
-                    System.out.println("########ask for all" + lastAsked + " " + devicesInRange.get(lastAsked).getDevice());
+                    System.out.println("########ask for all " + lastAsked + " " + devicesInRange.get(lastAsked).getDevice());
                 }
             }
         }
@@ -364,8 +364,8 @@ public class BTManager2  implements Serializable {
         bb.put((byte) breaths); //add ping code
 
         byte b = 0;
-        b += (ableToTalk == true ? 1 : 0);
-        b += (ableToWalk == true ? 2 : 0);
+        b += (ableToWalk == true ? 1 : 0);
+        b += (ableToTalk == true ? 2 : 0);
 
         bb.put(b); //add ping code
 
@@ -373,8 +373,8 @@ public class BTManager2  implements Serializable {
         byte c = 0;
         switch (color){
             case 1: c = 3; break;
-            case 2: c = 1; break;
-            case 3: c = 2; break;
+            case 2: c = 2; break;
+            case 3: c = 1; break;
             case 4: c = 4; break;
         }
         bb.put(c); //add ping code

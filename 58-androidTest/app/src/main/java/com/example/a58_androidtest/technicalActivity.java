@@ -97,20 +97,24 @@ public class technicalActivity extends AppCompatActivity {
             row2.setOrientation(LinearLayout.HORIZONTAL);
 
             TextView name = setTextViewAttributes(new TextView(this));
-            name.setText("#" + sim.getDevice() + " " + (sim.getConnectionStatus() == 1 ? "connected" : "disconnected"));
+            name.setText("#" + sim.getDevice() + " " + (sim.getConnectionStatus() == 1 ? "lacznosc" : "poza zasiegiem"));
 
             TextView walk = setTextViewAttributes(new TextView(this));
-            walk.setText("Walking:" + sim.getAbleToWalk());
+            walk.setText("chodzi: [" + (sim.getAbleToWalk() ? "T" : "N") + "]");
+
+            TextView talk = setTextViewAttributes(new TextView(this));
+            talk.setText("rozmawia: [" + (sim.getExecutesCommand() ? "T" : "N") + "]");
 
             TextView breath = setTextViewAttributes(new TextView(this));
-            breath.setText("breaths: " + sim.getBreathsPerMinute());
+            breath.setText("oddechy: " + sim.getBreathsPerMinute());
 
             TextView beats = setTextViewAttributes(new TextView(this));
-            beats.setText("beats: " + sim.getBeatsPerMinute());
+            beats.setText("bps: " + sim.getBeatsPerMinute());
 
 
             row2.addView(createColorRect(sim.getColorHex()));
             row2.addView(walk);
+            row2.addView(talk);
             row2.addView(breath);
             row2.addView(beats);
 

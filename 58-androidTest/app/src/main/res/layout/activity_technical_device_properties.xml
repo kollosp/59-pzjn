@@ -91,7 +91,6 @@
                 android:text="Puls [1/min]" />
 
 
-
             <EditText
                 android:id="@+id/beatsperseconds"
                 android:layout_width="wrap_content"
